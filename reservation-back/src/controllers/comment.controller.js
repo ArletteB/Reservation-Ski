@@ -1,19 +1,45 @@
-const CommentController = {
-    async createComment(req, res) {
-        res.send("Get All Comments")
+const Comment = require('../models/comment.model');
+
+const commentController = {
+    getAll: async (req, res) => {
+        const comments = await Comment.find();
+        res.send(comments)
     },
-    async getComments(req, res) {
-        res.send("Get All Comments")
+    getOne: async (req, res) => {
+        const { id } = req.params;
+        try {
+            const comment = await Comment.findById(id);
+            res.send(comment);
+        } catch (error) {
+            res.status(404).send({ message: "Comment not found" });
+        }
     },
-    async getComment(req, res) {
-        res.send("Get Comment")
+    create: async(req, res) => {
+        try {
+            const comment = await Comment.create(req.body);
+            res.send(comment);
+        } catch (error) {
+            res.status(400).send({ message: "Comment not created" });
+        }
     },
-    async updateComment(req, res) {
-        res.send("Update Comment")
+    update: async(req, res) => {
+        const { id } = req.params;
+        try {
+            const comment = await Comment.findByIdAndUpdate(id, req.body);
+            res.send(comment);
+        } catch (error) {
+            res.status(400).send({ message: "Comment not updated" });
+        }
     },
-    async deleteComment(req, res) {
-        res.send("Delete Comment")
+    delete: async(req, res) => {
+        const { id } = req.params;
+        try {
+            const comment = await Comment.findByIdAndDelete(id);
+            res.send(comment);
+        } catch (error) {
+            res.status(400).send({ message: "Comment not deleted" });
+        }
     }
 }
 
-module.exports = CommentController;
+module.exports = commentController;

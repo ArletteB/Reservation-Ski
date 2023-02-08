@@ -9,14 +9,11 @@ const PostSchema = new Schema({
     size: String,
     style: String,
     price: String,
-    description : Text,
+    description : String,
     comments: [{ type: Schema.Types.ObjectId, ref: 'Comment' }],
     createdAt: Date,
     bookings: [{ type: Schema.Types.ObjectId, ref: 'Booking' }],
     isAvailable: Boolean
-
-  
-  
 })
 
 module.exports = mongoose.model('Post', PostSchema);

@@ -1,28 +1,30 @@
 const express = require('express');
 const app = express();
-require('dotenv').config();
-const connectMongo = require('./config/mongo.connect');
+const dotenv = require('dotenv');
+const mongoConnect = require('./config/mongo.connect');
 const postRouter = require('./src/routers/post.router');
 const commentRouter = require('./src/routers/comment.router');
 const bookingRouter = require('./src/routers/booking.router');
 // const cors = require('cors');
+dotenv.config();
+const PORT = process.env.PORT || 3000;
 
-const PORT = process.env.PORT || 8000;
-
-connectMongo();
+mongoConnect();
 
 
 // app.use(cors());
 app.use(express.json());
 
-app.use('/posts', postRouter);
-app.use('/comments', commentRouter);
-app.use('/bookings', bookingRouter);
+app.use(postRouter);
+app.use(commentRouter);
+app.use(bookingRouter);
 
 
 
 
-
+app.get('/', (req, res) => {
+    res.send('Hello World!');
+})
 
 
 

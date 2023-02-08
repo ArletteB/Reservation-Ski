@@ -1,19 +1,45 @@
-const PostController = {
-    async createPost(req, res) {
-        res.send("Get All Comments")
+const Post = require('../models/post.model');
+
+const postController = {
+    getAll: async (req, res) =>{
+        const posts = await Post.find();
+        res.send(posts)
     },
-    async getPosts(req, res) {
-        res.send("Get All Posts")
+    getOne: async (req, res) =>{
+        const { id } = req.params;
+        try {
+            const post = await Post.findById(id);
+            res.send(post);
+        } catch (error) {
+            res.status(404).send({ message: "Post not found"});
+        }
     },
-    async getPost(req, res) {
-        res.send("Get Post")
+    create: async (req, res) =>{
+        try {
+            const post = await Post.create(req.body);
+            res.send(post);
+        } catch (error) {
+            res.status(400).send({ message: "Post not created"});
+        }
     },
-    async updatePost(req, res) {
-        res.send("Update Post")
+    update: async (req, res) =>{
+        const { id } = req.params;
+        try {
+            const post = await Post.findByIdAndUpdate(id, req.body)
+            res.send(post);
+        } catch (error) {
+            res.status(400).send({ message: "Post not updated"});
+        }
     },
-    async deletePost(req, res) {
-        res.send("Delete Post")
+    delete: async (req, res) =>{
+        const { id } = req.params;
+        try {
+            const post = await Post.findByIdAndDelete(id);
+            res.send(post);
+        } catch (error) {
+            res.status(400).send({ message: "Post not deleted"});
+        }
     }
 }
 
-module.exports = PostController;
+module.exports = postController;
